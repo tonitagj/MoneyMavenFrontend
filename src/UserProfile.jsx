@@ -109,20 +109,93 @@ export default function UserProfile() {
                     )
                 ) : (
                     <AuthForm onSubmit={handleUpdate}>
-                        <Input type="text" name="name" value={userData.name} onChange={handleChange} placeholder="First Name" required />
-                        <Input type="text" name="lastname" value={userData.lastname} onChange={handleChange} placeholder="Last Name" required />
-                        <Input type="email" name="email" value={userData.email} onChange={handleChange} placeholder="Email" disabled />
+                        <label htmlFor="name">First Name</label>
+                        <Input
+                            id="name"
+                            type="text"
+                            name="name"
+                            value={userData.name}
+                            onChange={handleChange}
+                            placeholder="First Name"
+                            required
+                        />
 
-                        <Input type="date" name="birthday" value={userData.birthday} onChange={handleChange} placeholder="Birthday" />
-                        <Input type="text" name="country" value={userData.country} onChange={handleChange} placeholder="Country of Residence" />
-                        <Input type="text" name="nationality" value={userData.nationality} onChange={handleChange} placeholder="Nationality" />
-                        <Input type="tel" name="phoneNumber" value={userData.phoneNumber} onChange={handleChange} placeholder="Phone Number" />
-                        <Input type="text" name="occupation" value={userData.occupation} onChange={handleChange} placeholder="Occupation" />
+                        <label htmlFor="lastname">Last Name</label>
+                        <Input
+                            id="lastname"
+                            type="text"
+                            name="lastname"
+                            value={userData.lastname}
+                            onChange={handleChange}
+                            placeholder="Last Name"
+                            required
+                        />
+
+                        <label htmlFor="email">Email</label>
+                        <Input
+                            id="email"
+                            type="email"
+                            name="email"
+                            value={userData.email}
+                            onChange={handleChange}
+                            placeholder="Email"
+                            disabled
+                        />
+
+                        <label htmlFor="birthday">Birthday</label>
+                        <Input
+                            id="birthday"
+                            type="date"
+                            name="birthday"
+                            value={userData.birthday}
+                            onChange={handleChange}
+                            placeholder="Birthday"
+                        />
+
+                        <label htmlFor="country">Country of Residence</label>
+                        <Input
+                            id="country"
+                            type="text"
+                            name="country"
+                            value={userData.country}
+                            onChange={handleChange}
+                            placeholder="Country of Residence"
+                        />
+
+                        <label htmlFor="nationality">Nationality</label>
+                        <Input
+                            id="nationality"
+                            type="text"
+                            name="nationality"
+                            value={userData.nationality}
+                            onChange={handleChange}
+                            placeholder="Nationality"
+                        />
+
+                        <label htmlFor="phoneNumber">Phone Number</label>
+                        <Input
+                            id="phoneNumber"
+                            type="tel"
+                            name="phoneNumber"
+                            value={userData.phoneNumber}
+                            onChange={handleChange}
+                            placeholder="Phone Number"
+                        />
+
+                        <label htmlFor="occupation">Occupation</label>
+                        <Input
+                            id="occupation"
+                            type="text"
+                            name="occupation"
+                            value={userData.occupation}
+                            onChange={handleChange}
+                            placeholder="Occupation"
+                        />
 
                         <SubmitButton type="submit" disabled={loading}>
                             {loading ? "Updating..." : "Save Changes"}
                         </SubmitButton>
-                        <Button onClick={() => setEditMode(false)}>Cancel</Button> {/* ✅ Cancel Button */}
+                        <Button onClick={() => setEditMode(false)}>Cancel</Button>
                     </AuthForm>
                 )}
             </Section>

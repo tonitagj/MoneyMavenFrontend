@@ -21,12 +21,19 @@ export default function Header() {
             <Link to="/user-profile">
               <Button>Profile</Button>
             </Link>
+            <Link to="/financial-profile">
+              <Button>Financial Profile</Button>
+            </Link>
             <Link to="/expenses">
               <Button>Tracker</Button>
+            </Link>
+            <Link to="/financial-goal">
+              <Button>Goals</Button>
             </Link>
             <Link to="/dashboard">
               <Button>Dashboard</Button>
             </Link>
+
           </>
         ) : (
           // ✅ Navbar for Guests (Before Login)

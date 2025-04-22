@@ -5,6 +5,9 @@ import UserProfile from "./UserProfile";
 import RegistrationPage from "./RegistrationPage";
 import { Routes, Route } from "react-router-dom";
 import DailyExpensesPage from "./DailyExpensesPage";
+import FinancialProfilePage from "./FinancialProfilePage";
+import DashboardPage from "./DashboardPage";
+import FinancialGoalPage from "./FinancialGoalPage";
 
 function App() {
   <div style={{ width: "100vw", height: "100vh", overflow: "hidden" }}></div>
@@ -17,6 +20,9 @@ function App() {
         <Route path="/registration" element={<RegistrationPage />} />
         <Route path="/user-profile" element={<UserProfile />} />
         <Route path="/expenses" element={<DailyExpensesPage />} />
+        <Route path="/financial-profile" element={<FinancialProfilePage />} />
+        <Route path="/dashboard" element={<DashboardPage />} />
+        <Route path="/financial-goal" element={<FinancialGoalPage />} />
       </Routes>
     
   );

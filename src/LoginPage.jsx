@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; // ✅ Used for redirection
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
@@ -7,14 +7,13 @@ import { AuthContainer, AuthForm, Input, SubmitButton, ErrorMsg } from "./styles
 import { Container } from "./styles";
 
 export default function LoginPage() {
-    const navigate = useNavigate(); // ✅ Navigate to user profile after login
+    const navigate = useNavigate();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [errors, setErrors] = useState({});
     const [serverError, setServerError] = useState("");
     const [loading, setLoading] = useState(false);
 
-    // ✅ Validate Form
     const validateForm = () => {
         let newErrors = {};
 
@@ -25,10 +24,9 @@ export default function LoginPage() {
         else if (password.length < 6) newErrors.password = "Password must be at least 6 characters!";
 
         setErrors(newErrors);
-        return Object.keys(newErrors).length === 0; // ✅ Returns true if no errors
+        return Object.keys(newErrors).length === 0;
     };
 
-    // ✅ Handle Login
     const handleSubmit = async (e) => {
         e.preventDefault();
         setServerError("");
@@ -41,17 +39,16 @@ export default function LoginPage() {
                     { email, password }, 
                     {
                         headers: { "Content-Type": "application/json" },
-                        withCredentials: true, // ✅ Allows cookies (if used)
+                        withCredentials: true,
                     }
                 );
 
                 if (response.status === 200) {
-                    localStorage.setItem("token", response.data.token); // ✅ Store JWT Token
-                    navigate("/user-profile"); // ✅ Redirect to user profile after login
+                    localStorage.setItem("token", response.data.token);
+                    navigate("/user-profile");
                 }
             } catch (error) {
                 console.error("Login error:", error);
-
                 if (error.response) {
                     setServerError(error.response.data || "Login failed! ❌ Invalid credentials.");
                 } else {
@@ -69,20 +66,24 @@ export default function LoginPage() {
             <AuthContainer>
                 <h2>Login to MoneyMaven</h2>
 
-                {serverError && <ErrorMsg>{serverError}</ErrorMsg>} {/* ✅ Show backend error */}
+                {serverError && <ErrorMsg>{serverError}</ErrorMsg>}
 
                 <AuthForm onSubmit={handleSubmit}>
+                    <label htmlFor="email">Email</label>
                     <Input
+                        id="email"
                         type="email"
-                        placeholder="Email"
+                        placeholder="Enter your email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                     />
                     {errors.email && <ErrorMsg>{errors.email}</ErrorMsg>}
 
+                    <label htmlFor="password">Password</label>
                     <Input
+                        id="password"
                         type="password"
-                        placeholder="Password"
+                        placeholder="Enter your password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                     />

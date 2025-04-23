@@ -71,7 +71,7 @@ export default function RegistrationPage() {
         if (validateForm()) {
             try {
                 const response = await axios.post(
-                    "http://localhost:8080/registration",
+                    "https://moneymavenfrontend-4.onrender.com/registration",
                     {
                         name: formData.fullName,
                         lastname: formData.lastname,

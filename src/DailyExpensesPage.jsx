@@ -23,7 +23,7 @@ export default function DailyExpensesPage() {
 
   const fetchExpenses = async () => {
     try {
-      const response = await axios.get("https://moneymavenfrontend-4.onrender.com/expenses/" + today, {
+      const response = await axios.get("https://moneymaven-3.onrender.com/expenses/" + today, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setExpenses(response.data);

@@ -34,7 +34,7 @@ export default function UserProfile() {
             }
 
             try {
-                const response = await axios.get("http://localhost:8080/user-profile", {
+                const response = await axios.get("https://moneymavenfrontend-4.onrender.com/user-profile", {
                     headers: { Authorization: `Bearer ${token}` },
                 });
 
@@ -63,7 +63,7 @@ export default function UserProfile() {
 
         try {
             await axios.put(
-                "http://localhost:8080/update-profile",
+                "https://moneymavenfrontend-4.onrender.com//update-profile",
                 userData,
                 { headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" } }
             );

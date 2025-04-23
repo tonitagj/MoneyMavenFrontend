@@ -23,7 +23,7 @@ export default function DailyExpensesPage() {
 
   const fetchExpenses = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/expenses/" + today, {
+      const response = await axios.get("https://moneymavenfrontend-4.onrender.com/expenses/" + today, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setExpenses(response.data);
@@ -70,7 +70,7 @@ export default function DailyExpensesPage() {
     const payload = { ...formData, date: today };
 
     try {
-      await axios.post("http://localhost:8080/expenses", payload, {
+      await axios.post("https://moneymavenfrontend-4.onrender.com/expenses", payload, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json"

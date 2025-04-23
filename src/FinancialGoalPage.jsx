@@ -20,7 +20,7 @@ export default function FinancialGoalPage() {
   useEffect(() => {
     const fetchGoalData = async () => {
       try {
-        const res = await axios.get("http://localhost:8080/financial-goal", {
+        const res = await axios.get("https://moneymavenfrontend-4.onrender.com/financial-goal", {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -53,7 +53,7 @@ export default function FinancialGoalPage() {
 
     const fetchGoalHistory = async () => {
         try {
-          const res = await axios.get("http://localhost:8080/goal-history", {
+          const res = await axios.get("https://moneymavenfrontend-4.onrender.com/goal-history", {
             headers: { Authorization: `Bearer ${token}` },
           });
           setGoalHistory(res.data);
@@ -75,7 +75,7 @@ export default function FinancialGoalPage() {
 
     try {
       await axios.post(
-        "http://localhost:8080/financial-goal",
+        "https://moneymavenfrontend-4.onrender.com/financial-goal",
         { targetAmount: parseFloat(targetAmount) },
         { headers: { Authorization: `Bearer ${token}` } }
       );

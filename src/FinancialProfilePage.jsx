@@ -25,7 +25,7 @@ export default function FinancialProfilePage() {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const response = await axios.get("https://moneymavenfrontend-4.onrender.com/financial-profile", {
+        const response = await axios.get("https://moneymaven-3.onrender.com/financial-profile", {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -89,7 +89,7 @@ export default function FinancialProfilePage() {
         Object.entries(formData).map(([key, val]) => [key, parseFloat(val)])
       );
 
-      await axios.put("https://moneymavenfrontend-4.onrender.com/financial-profile", numericData, {
+      await axios.put("https://moneymaven-3.onrender.com/financial-profile", numericData, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",

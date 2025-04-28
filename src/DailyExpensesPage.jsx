@@ -70,7 +70,7 @@ export default function DailyExpensesPage() {
     const payload = { ...formData, date: today };
 
     try {
-      await axios.post("https://moneymavenfrontend-4.onrender.com/expenses", payload, {
+      await axios.post("https://moneymaven-3.onrender.com/expenses", payload, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json"

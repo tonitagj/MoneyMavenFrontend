@@ -41,10 +41,10 @@ export default function DashboardPage() {
     const fetchInitialData = async () => {
       try {
         const headers = { Authorization: `Bearer ${token}` };
-        const monthlyRes = await axios.get("https://moneymavenfrontend-4.onrender.com/dashboard/monthly-expenses", { headers });
-        const impulseRes = await axios.get("https://moneymavenfrontend-4.onrender.com/dashboard/impulse-vs-necessity", { headers });
+        const monthlyRes = await axios.get("https://moneymaven-3.onrender.com/dashboard/monthly-expenses", { headers });
+        const impulseRes = await axios.get("https://moneymaven-3.onrender.com/dashboard/impulse-vs-necessity", { headers });
         const dailyRes = await axios.get(
-          `https://moneymavenfrontend-4.onrender.com/dashboard/daily-expenses?month=${selectedMonth}&year=${selectedYear}`,
+          `https://moneymaven-3.onrender.com/dashboard/daily-expenses?month=${selectedMonth}&year=${selectedYear}`,
           { headers }
         );
 
@@ -63,7 +63,7 @@ export default function DashboardPage() {
     const interval = setInterval(async () => {
       try {
         const headers = { Authorization: `Bearer ${token}` };
-        const impulseRes = await axios.get("https://moneymavenfrontend-4.onrender.com/dashboard/impulse-vs-necessity", { headers });
+        const impulseRes = await axios.get("https://moneymaven-3.onrender.com/dashboard/impulse-vs-necessity", { headers });
         setImpulseData(impulseRes.data);
       } catch (err) {
         console.error("Live update failed", err);

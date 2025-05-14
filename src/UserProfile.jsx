@@ -25,6 +25,9 @@ export default function UserProfile() {
 
   const token = localStorage.getItem("token");
 
+  /* ------------------------------------------------------------------ */
+  /* Fetch user data on mount                                           */
+  /* ------------------------------------------------------------------ */
   useEffect(() => {
     const fetchUserData = async () => {
       if (!token) {
@@ -32,6 +35,7 @@ export default function UserProfile() {
         navigate("/");
         return;
       }
+
       try {
         const response = await axios.get(
           "https://moneymaven-3.onrender.com/user-profile",
@@ -45,9 +49,13 @@ export default function UserProfile() {
         navigate("/");
       }
     };
+
     fetchUserData();
   }, [navigate, token]);
 
+  /* ------------------------------------------------------------------ */
+  /* Handlers                                                           */
+  /* ------------------------------------------------------------------ */
   const handleChange = (e) =>
     setUserData({ ...userData, [e.target.name]: e.target.value });
 
@@ -55,6 +63,7 @@ export default function UserProfile() {
     e.preventDefault();
     setLoading(true);
     setError("");
+
     try {
       await axios.put(
         "https://moneymaven-3.onrender.com/update-profile",
@@ -72,6 +81,7 @@ export default function UserProfile() {
       console.error("Error updating profile:", error);
       setError("Failed to update profile. Please try again.");
     }
+
     setLoading(false);
   };
 
@@ -80,10 +90,13 @@ export default function UserProfile() {
     navigate("/");
   };
 
+  /* ------------------------------------------------------------------ */
+  /* UI                                                                 */
+  /* ------------------------------------------------------------------ */
   return (
     <Container>
       <Header />
-      {/* ➜ centered content */}
+      {/* Center everything in the section */}
       <Section
         style={{
           display: "flex",
@@ -95,6 +108,9 @@ export default function UserProfile() {
         {error && <ErrorMsg>{error}</ErrorMsg>}
 
         {!editMode ? (
+          /* ------------------------------ */
+          /* READ‑ONLY VIEW                 */
+          /* ------------------------------ */
           userData ? (
             <>
               <p>
@@ -125,14 +141,28 @@ export default function UserProfile() {
                 <strong>Occupation:</strong>{" "}
                 {userData.occupation || "Not set"}
               </p>
-              <Button onClick={() => setEditMode(true)}>Edit Profile</Button>
-              <Button onClick={handleLogout}>Logout</Button>
+
+              {/* --- BUTTON GROUP WITH GAP --- */}
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  gap: "12px", // spacing between buttons
+                  marginTop: "8px",
+                }}
+              >
+                <Button onClick={() => setEditMode(true)}>Edit Profile</Button>
+                <Button onClick={handleLogout}>Logout</Button>
+              </div>
             </>
           ) : (
             <p>Loading...</p>
           )
         ) : (
-          /* ➜ form is also centered & constrained */
+          /* ------------------------------ */
+          /* EDIT MODE FORM                */
+          /* ------------------------------ */
           <AuthForm
             onSubmit={handleUpdate}
             style={{ maxWidth: "400px", width: "100%" }}

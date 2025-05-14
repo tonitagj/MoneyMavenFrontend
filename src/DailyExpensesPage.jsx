@@ -14,18 +14,24 @@ export default function DailyExpensesPage() {
     emotionAfterPurchase: "HAPPY",
     emotionAtRegistration: "PROUD"
   });
+  const [selectedDate, setSelectedDate] = useState(
+    new Date().toISOString().split("T")[0]
+  );
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [fieldErrors, setFieldErrors] = useState({});
 
   const token = localStorage.getItem("token");
-  const today = new Date().toISOString().split("T")[0];
 
-  const fetchExpenses = async () => {
+  /* ------------------------------------------------------------------
+   * Helpers
+   * ------------------------------------------------------------------ */
+  const fetchExpenses = async (dateParam = selectedDate) => {
     try {
-      const response = await axios.get("https://moneymaven-3.onrender.com/expenses/" + today, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const response = await axios.get(
+        `https://moneymaven-3.onrender.com/expenses/${dateParam}`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
       setExpenses(response.data);
     } catch (err) {
       console.error("Failed to load expenses", err);
@@ -33,18 +39,25 @@ export default function DailyExpensesPage() {
     }
   };
 
+  /* ------------------------------------------------------------------
+   * Lifecycle
+   * ------------------------------------------------------------------ */
   useEffect(() => {
     if (!token) return;
     fetchExpenses();
-  }, []);
+    // refetch whenever the date changes
+  }, [token, selectedDate]);
 
+  /* ------------------------------------------------------------------
+   * Form handlers
+   * ------------------------------------------------------------------ */
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
     setFieldErrors({ ...fieldErrors, [e.target.name]: "" });
   };
 
   const validateForm = () => {
-    let errors = {};
+    const errors = {};
     if (!formData.itemName.trim()) errors.itemName = "Item name is required!";
     if (!formData.price || isNaN(formData.price)) {
       errors.price = "Valid price is required!";
@@ -67,7 +80,7 @@ export default function DailyExpensesPage() {
       return;
     }
 
-    const payload = { ...formData, date: today };
+    const payload = { ...formData, date: selectedDate };
 
     try {
       await axios.post("https://moneymaven-3.onrender.com/expenses", payload, {
@@ -83,7 +96,7 @@ export default function DailyExpensesPage() {
         emotionAfterPurchase: "HAPPY",
         emotionAtRegistration: "PROUD"
       });
-      fetchExpenses();
+      fetchExpenses(selectedDate); // refresh list for the chosen date
     } catch (err) {
       console.error("Failed to submit expense", err);
       setError("Failed to submit expense.");
@@ -92,13 +105,40 @@ export default function DailyExpensesPage() {
     setLoading(false);
   };
 
+  /* ------------------------------------------------------------------
+   * UI
+   * ------------------------------------------------------------------ */
   return (
     <Container>
       <Header />
-      <Section style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+      <Section
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center"
+        }}
+      >
         <h2>Track Daily Expenses</h2>
 
-        <AuthForm onSubmit={handleSubmit} style={{ maxWidth: "400px", width: "100%" }}>
+        {/* Date selector */}
+        <div style={{ maxWidth: "400px", width: "100%", marginBottom: "25px" }}>
+          <label htmlFor="date">Date</label>
+          <Input
+            type="date"
+            id="date"
+            name="date"
+            value={selectedDate}
+            onChange={(e) => setSelectedDate(e.target.value)}
+            max={new Date().toISOString().split("T")[0]}
+            style={{ width: "100%" }}
+          />
+        </div>
+
+        {/* Expense form */}
+        <AuthForm
+          onSubmit={handleSubmit}
+          style={{ maxWidth: "400px", width: "100%" }}
+        >
           <label htmlFor="itemName">Expense Name</label>
           <Input
             type="text"
@@ -127,7 +167,12 @@ export default function DailyExpensesPage() {
             id="type"
             value={formData.type}
             onChange={handleChange}
-            style={{ padding: "12px", borderRadius: "10px", marginBottom: "15px", width: "100%" }}
+            style={{
+              padding: "12px",
+              borderRadius: "10px",
+              marginBottom: "15px",
+              width: "100%"
+            }}
           >
             <option value="NECESSITY">Necessity</option>
             <option value="IMPULSE">Impulse</option>
@@ -139,7 +184,12 @@ export default function DailyExpensesPage() {
             id="emotionAfterPurchase"
             value={formData.emotionAfterPurchase}
             onChange={handleChange}
-            style={{ padding: "12px", borderRadius: "10px", marginBottom: "15px", width: "100%" }}
+            style={{
+              padding: "12px",
+              borderRadius: "10px",
+              marginBottom: "15px",
+              width: "100%"
+            }}
           >
             <option value="HAPPY">HAPPY</option>
             <option value="GUILTY">GUILTY</option>
@@ -155,7 +205,12 @@ export default function DailyExpensesPage() {
             id="emotionAtRegistration"
             value={formData.emotionAtRegistration}
             onChange={handleChange}
-            style={{ padding: "12px", borderRadius: "10px", marginBottom: "15px", width: "100%" }}
+            style={{
+              padding: "12px",
+              borderRadius: "10px",
+              marginBottom: "15px",
+              width: "100%"
+            }}
           >
             <option value="PROUD">PROUD</option>
             <option value="REFLECTIVE">REFLECTIVE</option>
@@ -173,26 +228,54 @@ export default function DailyExpensesPage() {
           </SubmitButton>
         </AuthForm>
 
-        <h3 style={{ marginTop: "40px" }}>Today's Expenses</h3>
+        {/* Expenses table */}
+        <h3 style={{ marginTop: "40px" }}>
+          Expenses for {new Date(selectedDate).toLocaleDateString()}
+        </h3>
 
         {expenses.length === 0 ? (
-          <p>No expenses yet today.</p>
+          <p>No expenses yet on this date.</p>
         ) : (
-          <div style={{ overflowX: "auto", maxWidth: "500px", width: "100%" }}>
-            <table style={{ width: "100%", borderCollapse: "collapse", marginTop: "20px", textAlign: "left" }}>
+          <div
+            style={{
+              overflowX: "auto",
+              maxWidth: "500px",
+              width: "100%"
+            }}
+          >
+            <table
+              style={{
+                width: "100%",
+                borderCollapse: "collapse",
+                marginTop: "20px",
+                textAlign: "left"
+              }}
+            >
               <thead>
                 <tr style={{ backgroundColor: "#f0f4ff" }}>
-                  <th style={{ padding: "10px", borderBottom: "1px solid #ccc" }}>Item</th>
-                  <th style={{ padding: "10px", borderBottom: "1px solid #ccc" }}>Price (€)</th>
-                  <th style={{ padding: "10px", borderBottom: "1px solid #ccc" }}>Type</th>
+                  <th style={{ padding: "10px", borderBottom: "1px solid #ccc" }}>
+                    Item
+                  </th>
+                  <th style={{ padding: "10px", borderBottom: "1px solid #ccc" }}>
+                    Price (€)
+                  </th>
+                  <th style={{ padding: "10px", borderBottom: "1px solid #ccc" }}>
+                    Type
+                  </th>
                 </tr>
               </thead>
               <tbody>
                 {expenses.map((item, index) => (
                   <tr key={item.id || `${item.itemName}-${index}`}>
-                    <td style={{ padding: "10px", borderBottom: "1px solid #eee" }}>{item.itemName}</td>
-                    <td style={{ padding: "10px", borderBottom: "1px solid #eee" }}>{item.price.toFixed(2)}</td>
-                    <td style={{ padding: "10px", borderBottom: "1px solid #eee" }}>{item.type}</td>
+                    <td style={{ padding: "10px", borderBottom: "1px solid #eee" }}>
+                      {item.itemName}
+                    </td>
+                    <td style={{ padding: "10px", borderBottom: "1px solid #eee" }}>
+                      {item.price.toFixed(2)}
+                    </td>
+                    <td style={{ padding: "10px", borderBottom: "1px solid #eee" }}>
+                      {item.type}
+                    </td>
                   </tr>
                 ))}
               </tbody>

@@ -34,6 +34,7 @@ export default function DashboardPage() {
   const [dailyData, setDailyData] = useState({});
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1);
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
+  const [weeklyData, setWeeklyData] = useState({});
 
   const token = localStorage.getItem("token");
 
@@ -43,14 +44,14 @@ export default function DashboardPage() {
         const headers = { Authorization: `Bearer ${token}` };
         const monthlyRes = await axios.get("https://moneymaven-3.onrender.com/dashboard/monthly-expenses", { headers });
         const impulseRes = await axios.get("https://moneymaven-3.onrender.com/dashboard/impulse-vs-necessity", { headers });
-        const dailyRes = await axios.get(
-          `https://moneymaven-3.onrender.com/dashboard/daily-expenses?month=${selectedMonth}&year=${selectedYear}`,
-          { headers }
-        );
+        const dailyRes = await axios.get(`https://moneymaven-3.onrender.com/dashboard/daily-expenses?month=${selectedMonth}&year=${selectedYear}`, { headers });
+        const weeklyRes = await axios.get(`https://moneymaven-3.onrender.com/dashboard/weekly-expenses?month=${selectedMonth}&year=${selectedYear}`, { headers });
+
 
         setMonthlyData(monthlyRes.data);
         setImpulseData(impulseRes.data);
         setDailyData(dailyRes.data);
+        setWeeklyData(weeklyRes.data);
       } catch (err) {
         console.error("Error loading dashboard data", err);
       }
@@ -111,6 +112,18 @@ export default function DashboardPage() {
     ],
   };
 
+  const weeklyBarData = {
+    labels: Object.keys(weeklyData).map(w => `Week ${w}`),
+    datasets: [
+      {
+        label: "Weekly Expenses (€)",
+        data: Object.values(weeklyData),
+        backgroundColor: "#f39c12",
+      },
+    ],
+  };
+  
+
   return (
     <Container>
       <Header />
@@ -159,6 +172,13 @@ export default function DashboardPage() {
           <h4>Daily Expenses for {selectedMonth}/{selectedYear}</h4>
           <div style={{ maxWidth: "900px", margin: "0 auto" }}>
             <Line data={dailyLineData} height={140} />
+          </div>
+        </Section>
+
+        <Section>
+          <h4>Weekly Expenses ({selectedMonth}/{selectedYear})</h4>
+          <div style={{ maxWidth: "900px", margin: "0 auto" }}>
+            <Bar data={weeklyBarData} height={140} />
           </div>
         </Section>
       </AuthContainer>

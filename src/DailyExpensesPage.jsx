@@ -45,7 +45,6 @@ export default function DailyExpensesPage() {
   useEffect(() => {
     if (!token) return;
     fetchExpenses();
-    // refetch whenever the date changes
   }, [token, selectedDate]);
 
   /* ------------------------------------------------------------------
@@ -96,7 +95,7 @@ export default function DailyExpensesPage() {
         emotionAfterPurchase: "HAPPY",
         emotionAtRegistration: "PROUD"
       });
-      fetchExpenses(selectedDate); // refresh list for the chosen date
+      fetchExpenses(selectedDate);
     } catch (err) {
       console.error("Failed to submit expense", err);
       setError("Failed to submit expense.");
@@ -120,8 +119,12 @@ export default function DailyExpensesPage() {
       >
         <h2>Track Daily Expenses</h2>
 
-        {/* Date selector */}
-        <div style={{ maxWidth: "400px", width: "100%", marginBottom: "25px" }}>
+        {/* Expense form with the date field inside */}
+        <AuthForm
+          onSubmit={handleSubmit}
+          style={{ maxWidth: "400px", width: "100%" }}
+        >
+          {/* Date selector now inside AuthForm */}
           <label htmlFor="date">Date</label>
           <Input
             type="date"
@@ -130,15 +133,9 @@ export default function DailyExpensesPage() {
             value={selectedDate}
             onChange={(e) => setSelectedDate(e.target.value)}
             max={new Date().toISOString().split("T")[0]}
-            style={{ width: "100%" }}
+            style={{ marginBottom: "15px" }}
           />
-        </div>
 
-        {/* Expense form */}
-        <AuthForm
-          onSubmit={handleSubmit}
-          style={{ maxWidth: "400px", width: "100%" }}
-        >
           <label htmlFor="itemName">Expense Name</label>
           <Input
             type="text"

@@ -45,7 +45,7 @@ export default function DashboardPage() {
         const monthlyRes = await axios.get("https://moneymaven-3.onrender.com/dashboard/monthly-expenses", { headers });
         const impulseRes = await axios.get("https://moneymaven-3.onrender.com/dashboard/impulse-vs-necessity", { headers });
         const dailyRes = await axios.get(`https://moneymaven-3.onrender.com/dashboard/daily-expenses?month=${selectedMonth}&year=${selectedYear}`, { headers });
-        const weeklyRes = await axios.get(`https://moneymaven-3.onrender.com/dashboard/weekly-expenses?month=${selectedMonth}&year=${selectedYear}`, { headers });
+        const weeklyRes = await axios.get(`https://moneymaven-3.onrender.com/dashboard/dashboard/weekly-expenses?month=${selectedMonth}&year=${selectedYear}`, { headers });
 
 
         setMonthlyData(monthlyRes.data);

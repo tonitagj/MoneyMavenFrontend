@@ -35,6 +35,7 @@ export default function DashboardPage() {
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1);
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
   const [weeklyData, setWeeklyData] = useState({});
+  const [weeklyTypeData, setWeeklyTypeData] = useState({});
 
   const token = localStorage.getItem("token");
 
@@ -46,12 +47,12 @@ export default function DashboardPage() {
         const impulseRes = await axios.get("https://moneymaven-3.onrender.com/dashboard/impulse-vs-necessity", { headers });
         const dailyRes = await axios.get(`https://moneymaven-3.onrender.com/dashboard/daily-expenses?month=${selectedMonth}&year=${selectedYear}`, { headers });
         const weeklyRes = await axios.get(`https://moneymaven-3.onrender.com/dashboard/dashboard/weekly-expenses?month=${selectedMonth}&year=${selectedYear}`, { headers });
-
-
+        
         setMonthlyData(monthlyRes.data);
         setImpulseData(impulseRes.data);
         setDailyData(dailyRes.data);
         setWeeklyData(weeklyRes.data);
+        
       } catch (err) {
         console.error("Error loading dashboard data", err);
       }
@@ -73,6 +74,20 @@ export default function DashboardPage() {
 
     return () => clearInterval(interval);
   }, [token]);
+
+  useEffect(() => {
+    const fetchWeeklyType = async () => {
+      try {
+        const headers = { Authorization: `Bearer ${token}` };
+        const res = await axios.get(`https://moneymaven-3.onrender.com/dashboard/weekly-impulse-vs-necessity?month=${selectedMonth}&year=${selectedYear}`, { headers });
+        setWeeklyTypeData(res.data);
+      } catch (err) {
+        console.error("Weekly impulse/necessity fetch failed", err);
+      }
+    };
+  
+    fetchWeeklyType();
+  }, [token, selectedMonth, selectedYear]);
 
   const sortedDailyEntries = Object.entries(dailyData).sort(
     ([dateA], [dateB]) => new Date(dateA) - new Date(dateB)
@@ -122,6 +137,27 @@ export default function DashboardPage() {
       },
     ],
   };
+
+  const weekLabels = Object.keys(weeklyTypeData);
+  const necessityValues = weekLabels.map(week => weeklyTypeData[week]?.NECESSITY || 0);
+  const impulseValues = weekLabels.map(week => weeklyTypeData[week]?.IMPULSE || 0);
+
+  const weeklyImpulseChart = {
+    labels: weekLabels,
+    datasets: [
+      {
+        label: "Necessity",
+        data: necessityValues,
+        backgroundColor: "#4BC0C0",
+      },
+      {
+        label: "Impulse",
+        data: impulseValues,
+        backgroundColor: "#FF6384",
+      },
+    ],
+  };
+
   
 
   return (
@@ -166,6 +202,13 @@ export default function DashboardPage() {
           <div style={{ maxWidth: "600px", margin: "0 auto" }}>
             <Pie data={pieData} height={120} />
           </div>
+        </Section>
+
+        <Section>
+          <h4>Weekly Impulse vs Necessity</h4>
+          <div style={{ maxWidth: "900px", margin: "0 auto" }}>
+          <Bar data={weeklyImpulseChart} height={140} />
+        </div>
         </Section>
 
         <Section>

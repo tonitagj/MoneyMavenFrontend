@@ -116,7 +116,7 @@ export default function FinancialGoalPage() {
 
         <div style={{
           marginTop: "2rem",
-          background: rgb(59, 89, 152),
+          background: "#f2f2f2",
           padding: "1.5rem",
           borderRadius: "10px",
           boxShadow: "0 2px 6px rgba(0,0,0,0.1)",

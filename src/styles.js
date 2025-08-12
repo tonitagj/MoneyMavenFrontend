@@ -229,13 +229,14 @@ export const FeatureCard = styled.div`
        
     }
    .leftSide{
-        width: 60%;
+        width: 40%;
     }
     
     .pictureHolder{
         display: flex;
         align-items: center; /* vertical center */
         justify-content: center;
+        width: 60%;
     }
     
     img{
@@ -258,7 +259,7 @@ export const FeatureCard = styled.div`
         display: flex;
         align-items: center; /* vertical center */
         justify-content: center;
-        max-width: 100%;
+        max-width: 80%;
         height: auto;
         display: block;
         border-radius: 30px;

@@ -16,7 +16,7 @@ export default function Features() {
                   Easily set financial goals and track your progress in real time.
                   Stay in control of your money and make confident financial decisions.</p>
           </section>
-          <section className="pictureHolder">
+          <section className="pictureHolder ">
               <img src={smartBudgeting} className="cardPicture"></img>
           </section>
 
@@ -44,4 +44,5 @@ export default function Features() {
         </FeatureCard>
     </Section>
   );
+
 }
